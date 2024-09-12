@@ -34,4 +34,9 @@ public class HomeController {
         model.addAttribute("currentDateTime", currentDateTime);
         return "about-us";
     }
+
+    @GetMapping("/contact-us")
+    public String contactUs(){
+        return "contact-us";
+    }
 }
