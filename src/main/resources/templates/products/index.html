@@ -10,6 +10,7 @@
         <thead>
             <tr>
                 <th>Name</th>
+                <th>Category</th>
                 <th>Price</th>
                 <th>Actions</th>
             </tr>
@@ -17,6 +18,7 @@
         <tbody>
             <tr th:each="product: ${products}">
                 <td th:text="${product.name}"></td>
+                <td th:text="${product.category.name}"></td>
                 <td th:text="${product.price}"></td>
                 <td>
                     <a th:href="@{/products/{id}(id=${product.id})}">Product Details</a>

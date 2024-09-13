@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.example.demo.repo.CategoryRepo;
 import com.example.demo.repo.ProductRepo;
 
 import jakarta.validation.Valid;
@@ -19,18 +20,20 @@ import com.example.demo.models.Product;
 @Controller
 public class ProductController {
     private final ProductRepo productRepo;
-    
+    private final CategoryRepo categoryRepo;
+
     @Autowired
     // Dependency injection = when Springboots creates an instances of Product controllers
     // it will automatically create an instance of ProductRepo and pass it into the new instance
     // of product controller
-    public ProductController(ProductRepo productRepo) {
+    public ProductController(ProductRepo productRepo, CategoryRepo categoryRepo) {
         this.productRepo = productRepo;
+        this.categoryRepo = categoryRepo;
     }
 
     @GetMapping("/products")
     public String listProducts(Model model){
-        List<Product> products = productRepo.findAll();
+        List<Product> products = productRepo.findAllWithCategories();
         model.addAttribute("products", products);
         return "products/index";
     }
@@ -43,13 +46,18 @@ public class ProductController {
 
         var newProduct = new Product();
         // add the instance of the new product model to the view model
+
+        // find all the categories and add it to the view model
+        model.addAttribute("categories", categoryRepo.findAll());
+
         model.addAttribute("product", newProduct);
         return "products/create";
     }
     // The results of the validation will be in the bindingResult parameter
     @PostMapping("/products/create")
-    public String processCreateProductForm(@Valid @ModelAttribute Product newProduct, BindingResult bindingResult){
+    public String processCreateProductForm(@Valid @ModelAttribute Product newProduct, BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()){
+            model.addAttribute("categories", categoryRepo.findAll());
             return "products/create";
         }
         
@@ -73,12 +81,22 @@ public class ProductController {
         var product = productRepo.findById(id).orElseThrow(()-> new RuntimeException());
         model.addAttribute("product", product);
 
+        //find all categories
+        model.addAttribute("categories", categoryRepo.findAll());
+
         return "products/edit";
     }
 
     @PostMapping("/products/{id}/edit")
-    public String updateProduct(@PathVariable Long id, @ModelAttribute Product product){
+    public String updateProduct(@PathVariable Long id, @Valid @ModelAttribute Product product, BindingResult bindingResult, Model model){
         product.setId(id); //Ensure we are updating the correct Id
+        
+        if (bindingResult.hasErrors()){
+            model.addAttribute("product", product);
+            model.addAttribute("categories", categoryRepo.findAll());
+            return "redirect:/prodcuts" + id + "/edit";
+        }
+        
         productRepo.save(product);
         return "redirect:/products";
     }

@@ -20,5 +20,15 @@
         th:errors="*{name}"
         style="display:block">
         </div>
+        <div>
+            <label>Category</label>
+            <select class="form-control" th:field="*{category}" required>
+                <option 
+                th:each="category: ${categories}" 
+                th:value="${category.id}" 
+                th:text="${category.name}"></option>
+
+            </select>
+        </div>
     </div>
 </th:block>
