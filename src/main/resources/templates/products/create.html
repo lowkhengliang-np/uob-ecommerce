@@ -1,0 +1,20 @@
+<html lang="eng" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{
+        base::html(
+            ~{::title},
+            ~{::content},
+            ~{},
+            ~{}
+        )
+    }"
+>
+<title>Add New Product</title>
+<th:block th:fragment="content">
+
+<form method="POST" th:object="${product}">    
+    <div th:replace="~{products/product-form-field::fields}"></div>
+    <button type="submit">Create Product</button>
+</form>
+
+</th:block>
+</html>

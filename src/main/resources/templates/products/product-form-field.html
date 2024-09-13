@@ -1,0 +1,24 @@
+<th:block th:fragment="fields">
+    <div>
+        <label>Name:</label>
+        <input type="text" th:field="*{name}" class="form-control"/>
+        <div class="invalid-feedback"
+        th:if="${#fields.hasErrors('name')}"
+        th:errors="*{name}"
+        style="display:block">
+        </div>
+    </div>
+    <div>
+        <label>Description:</label>
+        <textarea th:field="*{description}" class="form-control"></textarea>
+    </div>
+    <div>
+        <label>Price:</label>
+        <input type="number" th:field="*{price}" class="form-control"/>
+        <div class="invalid-feedback"
+        th:if="${#fields.hasErrors('name')}"
+        th:errors="*{name}"
+        style="display:block">
+        </div>
+    </div>
+</th:block>
