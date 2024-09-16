@@ -1,0 +1,30 @@
+<html lang="eng" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{
+        base::html(
+            ~{::title},
+            ~{::content},
+            ~{},
+            ~{}
+        )
+    }"
+>
+<title>Login</title>
+<th:block th:fragment="content">
+    <div th:text="${param.error}" th:if="${param.error}" class="alert alert-danger">
+
+    </div>
+
+    <form method="POST" th:action="@{/login}">
+        <div>
+            <label>Username</label>
+            <input type="text" name="username" required class="form-control"/>
+        </div>
+        <div>
+            <label>Password</label>
+            <input type="password" name="password" required/>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+    </form>
+</th:block>

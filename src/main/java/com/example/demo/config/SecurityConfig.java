@@ -21,15 +21,10 @@ public class SecurityConfig {
         // http securityClass allows us to define security rules
         http.authorizeHttpRequests(authz ->
         authz.requestMatchers("/register", "login", "/css/**", "/js/**").permitAll()
-        .anyRequest().permitAll() //no login required to these urls
-        ).formLogin(form -> form.loginPage("/login").permitAll()
+        .anyRequest().authenticated() //no login required to these urls
+        ).formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/products", true).permitAll()
         ).logout(logout -> logout.permitAll()
         );
         return http.build();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
     }
 }
