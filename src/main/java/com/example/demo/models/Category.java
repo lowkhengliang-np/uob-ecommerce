@@ -3,8 +3,6 @@ import jakarta.persistence.*;
 import jakarta.validation.*;
 import java.util.*;
 
-
-
 @Entity
 @Table(name="categories")
 public class Category {

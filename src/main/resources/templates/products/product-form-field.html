@@ -30,5 +30,16 @@
 
             </select>
         </div>
+        <!-- Multi select for selecting tags -->
+        <div>
+            <label>Tags</label>
+            <select multiple class="form-control" name="tagIds">
+                <option th:each="tag: ${allTags}"
+                th:value="${tag.id}"
+                th:text="${tag.name}"
+                th:selected="${product.tags != null and product.tags.contains(tag)}">
+            </option>
+            </select>
+        </div>
     </div>
 </th:block>

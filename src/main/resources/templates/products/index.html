@@ -19,6 +19,11 @@
             <tr th:each="product: ${products}">
                 <td th:text="${product.name}"></td>
                 <td th:text="${product.category.name}"></td>
+                <td>
+                    <span th:each="tag: ${product.tags}"
+                    th:text="${tag.name}"
+                    class="badge text-bg-primary ms-1 me-1"></span>
+                </td>
                 <td th:text="${product.price}"></td>
                 <td>
                     <a th:href="@{/products/{id}(id=${product.id})}">Product Details</a>
