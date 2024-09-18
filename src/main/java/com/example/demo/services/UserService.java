@@ -23,6 +23,10 @@ public class UserService implements UserDetailsService{
         this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
     }
+    
+    public User findUserByUsername(String username){
+        return userRepo.findByUsername(username);
+    }
 
     public User registerNewUser(User user){
         // before we save the user to the database, we have to hash the password
@@ -40,4 +44,6 @@ public class UserService implements UserDetailsService{
         }
         return user;
     }
+
+    
 }
