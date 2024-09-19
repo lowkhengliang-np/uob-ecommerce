@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:replace$(title)>TravelGear</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <th:block th:replace="${additionalCss} ?: ~{}"></th:block>
 </head>
 
@@ -27,11 +28,16 @@
                         <a class="nav-link" href="#">Contact Us</a>
                     </li>
                 </ul>
+
                 <div class="ml-auto">
                     <span th:if="${isAuthenticated}" th:text="${currentUser}"></span>
+                    <a class="navbar-brand" href="/cart" padding="5px">
+                        <i class="fas fa-shopping-cart"></i> <!-- Font Awesome cart icon -->
+                    </a>
                     <form style="display:inline" class="nav-item" method="POST" th:action="@{/logout}" th:if="${isAuthenticated}">
                         <button type="submit" class="btn btn-danger">Log Out</button>
                     </form>
+
                 </div>
             </div>
         </nav>

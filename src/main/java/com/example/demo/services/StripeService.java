@@ -26,10 +26,10 @@ public class StripeService {
         Stripe.apiKey = stripeSecretKey;
     }
 
-    public Session createCheckout (List<CartItem> cartItems, String successUrl, String cancelURL)
+    public Session createCheckout (List<CartItem> cartItems, long userId, String successUrl, String cancelURL)
         throws StripeException{
         // Create line items, description of the product + quantity + price per unit
-        //pass all the line items, along with payment requirements(like currency) to stripe
+        // pass all the line items, along with payment requirements(like currency) to stripe
         // receive the checkout session id from stripe
         List<SessionCreateParams.LineItem> lineItems = new ArrayList<>();
         for (CartItem item: cartItems){
@@ -47,8 +47,13 @@ public class StripeService {
             lineItems.add(lineItem);
         }
         //create checkout session
-        SessionCreateParams params = SessionCreateParams.builder().setMode(SessionCreateParams.Mode.PAYMENT)
-        .setCancelUrl(cancelURL).setSuccessUrl(successUrl).addAllLineItem(lineItems).build();
+        SessionCreateParams params = SessionCreateParams.builder()
+        .setMode(SessionCreateParams.Mode.PAYMENT)
+        .setCancelUrl(cancelURL)
+        .setSuccessUrl(successUrl)
+        .addAllLineItem(lineItems)
+        .setClientReferenceId(Long.toString(userId))
+        .build();
 
         return Session.create(params);
         

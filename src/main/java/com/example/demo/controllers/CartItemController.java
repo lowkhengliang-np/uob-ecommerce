@@ -91,6 +91,5 @@ public class CartItemController {
             redirectAttributes.addFlashAttribute("message", e.getMessage());
         }
         return "redirect:/cart";
-
     }
 }

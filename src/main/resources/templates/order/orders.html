@@ -1,0 +1,86 @@
+<html lang="eng" xmlns:th="http://www.thymeleaf.org" th:replace="~{
+        base::html(
+            ~{::title},
+            ~{::content},
+            ~{},
+            ~{}
+        )
+    }">
+<title>Orders</title>
+<th:block th:fragment="content">
+    <h1>Order History</h1>
+    <table class="table" border="2">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Order ID</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Unit Price</th>
+                <th scope="col">Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="order : ${orders}">
+                <td th:text="${order.id}"></td>
+                <td>
+                    <ul>
+                        <li th:each="orderItem : ${order.orderItems}" th:text="${orderItem.product.name}"></li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li th:each="orderItem : ${order.orderItems}" th:text="${orderItem.quantity}"></li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li th:each="orderItem : ${order.orderItems}"
+                            th:text="${#numbers.formatDecimal(orderItem.product.price, 2, 2)}"></li>
+                    </ul>
+                </td>
+                <td th:text="${#numbers.formatCurrency(#aggregates.sum(order.orderItems.![quantity * product.price]))}" class="fw-bold"></td>
+            </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/products}" class="btn btn-success">Shop More</a>
+</th:block>
+
+</html>
+
+
+<!-- <td th:each="orderItem, stat : ${order.orderItems}">
+                    <span th:text="${orderItem.product.name}"></span>
+                </td>
+                <td th:each="orderItem, stat : ${order.orderItems}">
+                    <span th:text="${orderItem.quantity}"></span>
+                </td>
+                <td th:each="orderItem, stat : ${order.orderItems}">
+                    <span th:text="${orderItem.product.price}"></span>
+                </td> -->
+
+
+<!-- <table border="1">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="order : ${orders}">
+                <td th:text="${order.id}"></td>
+
+                <td th:each="orderItem, stat : ${order.orderItems}">
+                    <span th:text="${orderItem.product.name}"></span>
+                </td>
+                <td th:each="orderItem, stat : ${order.orderItems}">
+                    <span th:text="${orderItem.quantity}"></span>
+                </td>
+                <td th:each="orderItem, stat : ${order.orderItems}">
+                    <span th:text="${orderItem.product.price}"></span>
+                </td>
+            </tr>
+        </tbody>
+    </table> -->
