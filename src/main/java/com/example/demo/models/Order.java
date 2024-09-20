@@ -30,6 +30,8 @@ public class Order {
     @OneToMany(mappedBy="order", cascade=CascadeType.ALL, orphanRemoval=true)
     private Set<OrderItem> orderItems = new HashSet<>();
 
+    private String status = "pending";
+
     public Order(){
     }
 
@@ -43,16 +45,26 @@ public class Order {
     public void setId(Long id) {
         this.id = id;
     }
+
     public User getUser() {
         return user;
     }
     public void setUser(User user) {
         this.user = user;
     }
+
     public Set<OrderItem> getOrderItems() {
         return orderItems;
     }
     public void setOrderItems(Set<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
+    
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
 }

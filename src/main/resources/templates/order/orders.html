@@ -10,6 +10,10 @@
 <th:block th:fragment="content">
     <h1>Order History</h1>
     <table class="table" border="2">
+        <p>
+            Username: <span th:text="${username}"></span>
+            Email: <span th:text="${email}"></span>
+        </p>
         <thead class="thead-dark">
             <tr>
                 <th scope="col">Order ID</th>
@@ -17,6 +21,8 @@
                 <th scope="col">Quantity</th>
                 <th scope="col">Unit Price</th>
                 <th scope="col">Total Price</th>
+                <th scope="col">Action</th>
+                <th scope="col">Order Status</th>
             </tr>
         </thead>
         <tbody>
@@ -39,6 +45,10 @@
                     </ul>
                 </td>
                 <td th:text="${#numbers.formatCurrency(#aggregates.sum(order.orderItems.![quantity * product.price]))}" class="fw-bold"></td>
+                <td>
+                    <a th:href="@{/order/{id}/delete(id=${order.id})}" class="btn btn-danger btn-sm">Remove</a>
+                </td>
+                <td th:text="${order.status}"></td>
             </tr>
         </tbody>
     </table>

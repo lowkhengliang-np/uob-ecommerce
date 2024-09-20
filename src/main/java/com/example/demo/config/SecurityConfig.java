@@ -21,8 +21,8 @@ public class SecurityConfig {
         // http securityClass allows us to define security rules
         http.csrf(csrf -> csrf.ignoringRequestMatchers("/stripe/webhook"))
         .authorizeHttpRequests(authz ->
-        authz.requestMatchers("/register", "login", "/css/**", "/js/**", "/stripe/webhook").permitAll()
-        .anyRequest().authenticated() //no login required to these urls
+        authz.requestMatchers("/register", "login", "/css/**", "/js/**", "/stripe/webhook").permitAll() //no login required to these urls
+        .anyRequest().authenticated() 
         ).formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/products", true).permitAll()
         ).logout(logout -> logout.permitAll()
         );

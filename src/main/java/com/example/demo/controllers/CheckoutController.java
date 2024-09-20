@@ -31,8 +31,8 @@ public class CheckoutController {
         @AuthenticationPrincipal User user,
         Model model){
         try{
-            String successUrl="https://www.google.com";
-            String cancelUrl="https://www.yahoo.com";
+            String successUrl="https://stunning-trout-4jg57ww6rr6w3jqvr-8080.app.github.dev/products";
+            String cancelUrl="https://stunning-trout-4jg57ww6rr6w3jqvr-8080.app.github.dev/cart";
 
             var cartItems = cartItemService.findByUser(user);
             Session session = stripeService.createCheckout(cartItems, user.getId(), successUrl, cancelUrl);

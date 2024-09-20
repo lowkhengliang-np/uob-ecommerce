@@ -14,12 +14,15 @@ import com.example.demo.repo.OrderRepo;
 import com.example.demo.repo.OrderItemRepo;
 import com.example.demo.repo.ProductRepo;
 import com.example.demo.repo.UserRepo;
+import com.example.demo.repo.CartItemRepo;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Event;
 import com.stripe.model.LineItem;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionListLineItemsParams;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class OrderService {
@@ -28,14 +31,16 @@ public class OrderService {
     private final ProductRepo productRepo;
     private final OrderItemRepo orderItemRepo;
     private final UserRepo userRepo;
+    private final CartItemRepo cartItemRepo;
 
     //added
     @Autowired
-    public OrderService(OrderRepo orderRepo, ProductRepo productRepo, OrderItemRepo orderItemRepo, UserRepo userRepo) {
+    public OrderService(OrderRepo orderRepo, ProductRepo productRepo, OrderItemRepo orderItemRepo, UserRepo userRepo, CartItemRepo cartItemRepo){        
         this.orderRepo = orderRepo;
         this.productRepo = productRepo;
         this.orderItemRepo = orderItemRepo;
         this.userRepo = userRepo;
+        this.cartItemRepo = cartItemRepo;
     }
 
 
@@ -62,7 +67,7 @@ public class OrderService {
             order.setUser(user);
 
             //Store a set of orderItem object
-            Set<OrderItem> orderItems = new HashSet<>();
+            // Set<OrderItem> orderItems = new HashSet<>();
             //Store a dictionary of product_id to quantity
             Map<String, Long> orderedProducts = new HashMap<>();
 
@@ -72,7 +77,6 @@ public class OrderService {
                     System.out.println("Unable to get product id for line item" + item);
                     continue; // skip the rest of the lines in the loop and start a new iteration
                 }
-
                 //Added
                 Product product = productRepo.findById(Long.valueOf(productId))
                         .orElseThrow(() -> new RuntimeException("Product not found!"));
@@ -88,6 +92,9 @@ public class OrderService {
                 System.out.println("Order and Order items saved successfully");
                 //Added
                 orderedProducts.put(productId, quantity);
+                cartItemRepo.deleteByUserId(userId);
+                order.setStatus("processing"); //set order status to processing after user paid
+                System.out.println(order.getStatus());
             }
             System.out.println(orderedProducts);
         }
@@ -95,4 +102,18 @@ public class OrderService {
             System.out.println(e);
         }
     }
+
+    @Transactional
+    public void removeFromOrder(long orderId, User user){
+        orderRepo.deleteByIdAndUser(orderId, user);
+    }
+
+    // public List<String> getOrderStatus(List<Order> orders){
+    //     List<String> status = new ArrayList<>();
+    //     for (Order order: orders){
+    //         status.add(order.getStatus());
+    //     }
+    //     return status;
+    // }
+
 }
