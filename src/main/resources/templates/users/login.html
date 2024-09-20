@@ -2,15 +2,19 @@
         base::html(
             ~{::title},
             ~{::content},
-            ~{},
+            ~{::additionalCss},
             ~{}
         )
     }">
-    
+
+<th:block th:fragment="additionalCss">
+        <link rel="stylesheet" href="style.css">
+    </th:block>
+
 <title>Login</title>
 <th:block th:fragment="content">
+    <img th:src="@{/images/cat.jpg}" alt="Sad Cat" id="champion-image"/>
     <div th:text="${param.error}" th:if="${param.error}" class="alert alert-danger"></div>
-
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-4">
