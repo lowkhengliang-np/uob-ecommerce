@@ -11,6 +11,7 @@
             <tr>
                 <th>Name</th>
                 <th>Category</th>
+                <th>Tag</th>
                 <th>Price</th>
                 <th>Actions</th>
             </tr>
@@ -26,6 +27,12 @@
                 </td>
                 <td th:text="${product.price}"></td>
                 <td>
+                    <form th:action="@{/cart/add}" method="POST" class="d-inline">
+                        <input type="hidden" name="productId" th:value="${product.id}"/>
+                        <input type="number" name="quantity" value="1" min="1" max="10" 
+                        class="form-control form-control-sm d-inline" style="width:60px"/>
+                        <button type="submit" class="btn btn-sm btn-success">Add to Cart</button>
+                    </form>
                     <a th:href="@{/products/{id}(id=${product.id})}">Product Details</a>
                     <a th:href="@{/products/{id}/edit(id=${product.id})}">Edit</a>
                     <a th:href="@{/products/{id}/delete(id=${product.id})}">Delete</a>
@@ -33,5 +40,6 @@
             </tr>
         </tbody>
     </table>
+    <a th:href="@{/orders}" class="btn btn-primary">View Orders</a>
 </th:block>
 </html>
